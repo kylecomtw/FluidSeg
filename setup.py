@@ -7,6 +7,6 @@ setup(name='FluidSeg',
       author='Sean Tseng',
       author_email='seantyh@gmail.com',
       license='GNUv3',
-      packages=['fluidSeg'],
+      packages=['FluidSeg'],
       test_suite='tests',
       zip_safe=False)

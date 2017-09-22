@@ -13,7 +13,7 @@ logger.setLevel(logging.INFO)
 logger.addHandler(ch)
 
 class FluidSeg:
-    TOKEN_PAT = "[\u3400-\u9fff\uf900-\ufaff]|[^\s\u3400-\u9fff\uf900-\ufaff]+"
+    TOKEN_PAT = r"[\u3400-\u9fff\uf900-\ufaff]|[^\s\u3400-\u9fff\uf900-\ufaff]+"
     def __init__(self, lexicon):
         # load lexicon
         basepath = os.path.dirname(os.path.abspath(__file__))
