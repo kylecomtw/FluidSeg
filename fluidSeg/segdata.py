@@ -14,6 +14,7 @@ logger.setLevel(logging.INFO)
 class Segments:
     def __init__(self, tokens: List[TokenData]) -> None:
         self.tokens = tokens
+        self.gran_levels = {}
         self.data = ["B" * len(tokens)]
     
     def __getitem__(self, item):
@@ -22,11 +23,11 @@ class Segments:
     def __setitem__(self, x, y):
         self.data[x] = y
     
-    def addLevels(self, labels):
+    def addLevel(self, labels):        
         self.data.append(labels)
 
-    def getLevels(self):
-        return len(self.data)
+    def getLevel(self, gran_level):
+        return self.data[gran_level]
     
     def importSegData(self, otherSeg: List[TokenData]):
         # tokens_chstart: [chstart of each token]
