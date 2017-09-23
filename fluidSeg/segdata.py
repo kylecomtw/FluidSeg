@@ -3,16 +3,17 @@ from typing import List
 from .tokendata import TokenData
 
 class Segments:
-    def __init__(self, tokens):
+    def __init__(self, tokens: List[TokenData]):
         self.tokens = tokens
         self.data = ["B" * len(tokens)]
+        return None
     
     def __getitem__(self, item):
         return self.data[item]
 
     def __setitem__(self, x, y):
         self.data[x] = y
-
+    
     def addLevels(self, labels):
         self.data.append(labels)
 
@@ -23,12 +24,38 @@ class Segments:
         # preseg cannot divide token delimit       
         tokens_chstart = [x.chstart for x in self.tokens]
         tokens_chend = [x.chend for x in self.tokens]
+        chstart_map = {chstart: token_i for token_i, chstart in enumerate(tokens_chstart)}
+        chend_map = {chend: token_i for token_i, chend in enumerate(tokens_chend)}
         preseg_chstart = [x.chstart for x in preseg]
         preseg_chend = [x.chend for x in preseg]
-        aligned_chstart = self.align_sequence(tokens_chstart, preseg_chstart)
-        aligned_chend = self.align_sequence(tokens_chend, preseg_chend)
+        # aligned_chstart is the list of corresponding "index" of the 
+        # tokens_chstart
+        aligned_chstart_idx = self.align_sequence(tokens_chstart, preseg_chstart)
+        aligned_chend_idx = self.align_sequence(tokens_chend, preseg_chend)        
         
         # transform aligned chpos into label
+        labels = ["O"] * len(self.tokens)        
+        for ref_idx in aligned_chstart_idx:
+            if ref_idx < 0: continue
+            ref_chstart = tokens_chstart[ref_idx]            
+            token_i = chstart_map[ref_chstart]            
+            labels[token_i] = "B"
+
+        
+        for ref_idx in aligned_chend_idx:            
+            if ref_idx < 0: continue
+            ref_chend = tokens_chend[ref_idx]
+            token_i = chend_map[ref_chend]
+            # pdb.set_trace()            
+            if labels[token_i] == "B": continue
+            labels[token_i] = "E"
+        print("tokens_chstart: ", tokens_chstart)
+        print("tokens_chend: ", tokens_chend)
+        print("preseg_chstart: ", preseg_chstart)
+        print("preseg_chend: ", preseg_chend)
+        print("aligned_chstart_idx: ", aligned_chstart_idx)
+        print("aligned_chend_idx: ", aligned_chend_idx)
+        self.data.append("".join(labels))
     
     def edit_distance(self, seq_ref, seq_x):
         m = len(seq_ref) + 1
@@ -49,7 +76,7 @@ class Segments:
         # dynamic programming
         for i in range(1, m):
             for j in range(1, n):
-                cost = 0 if seq_ref[i-1] == seq_x[j-1] else 1
+                cost = 0 if seq_ref[i-1] == seq_x[j-1] else 1000
                 idx_vec = [(i-1, j-1), (i, j-1), (i-1, j)]
                 cost_vec = [tbl[idx_vec[0]]+cost, tbl[idx_vec[1]]+1, tbl[idx_vec[2]]+1]
                 min_cost = min(cost_vec)                

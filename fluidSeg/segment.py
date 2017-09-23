@@ -4,6 +4,7 @@ import pdb
 import unicodedata
 import os.path
 from .segdata import Segments
+from .tokenizer import Tokenizer
 from .tokendata import TokenData
 import logging
 
@@ -13,26 +14,19 @@ logger.setLevel(logging.INFO)
 logger.addHandler(ch)
 
 class FluidSeg:
-    TOKEN_PAT = r"[\u3400-\u9fff\uf900-\ufaff]|[^\s\u3400-\u9fff\uf900-\ufaff]+"
+    
     def __init__(self, lexicon):
         # load lexicon
         basepath = os.path.dirname(os.path.abspath(__file__))
         self.lexicon = lexicon        
-        self.suppLexicon = {}
-        self.token_pat = re.compile(FluidSeg.TOKEN_PAT)
-
-    def tokenize(self, text):
-        token_mat_iter = self.token_pat.finditer(text)
-        tokens = []
-        for it in token_mat_iter:
-            tokens.append(TokenData(it.group(), it.start, it.end))
-        return tokens
+        self.suppLexicon = {}        
+        self.tokenizer = Tokenizer()
 
     def setSupplementLexicon(self, auxDict):
         self.suppLexicon = auxDict
 
     def parse(self, textStr):
-        tokens = self.tokenize(textStr)
+        tokens = self.tokenizer.tokenize(textStr)
         segData = Segments(tokens)        
         fwd_mat = self.maxMatching('forward', tokens)
         bck_mat = self.maxMatching('backward', tokens)

@@ -3,3 +3,6 @@ class TokenData:
         self.text = txt
         self.chstart = start
         self.chend = end
+
+    def __repr__(self):
+        return "<{}-{},{}>".format(self.text, self.chstart, self.chend)
