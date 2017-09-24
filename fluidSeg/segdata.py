@@ -26,7 +26,7 @@ class Segments:
             strbuf.append("Preseg: " + str(self.preseg))
         if self.data:
             strbuf.append("Data: ")
-            for k in sorted(self.data.keys(), reversed=True):
+            for k in sorted(self.data.keys(), reverse=True):
                 strbuf.append("  [%.2f]: %s" % (k, str(self.data[k])))
         return "\n".join(strbuf)
 
@@ -66,23 +66,15 @@ class Segments:
     def toSegmentedText(self, ref_seg=None, granularity=-1):
         gran = self.find_cloest_granularity(granularity)
         if not ref_seg:
-            ref_seq = self.tokens
+            ref_seg = self.tokens
         if gran:
             gran_seg = self.data[gran]
-            tokseq = self.merge_segments(ref_seg, gran_seg)
+            tokseg = self.merge_segments(ref_seg, gran_seg)
         else:
             # there is no data in self.data
-            tokseq = self.merge_segments(ref_seg, ref_seg)
-
-        labels = SeqAlgo.generate_labels(len(self.tokens),
-                    tokseq["start"], tokseq["end"])
-
-        strbuf = StringIO()
-        for lab, tok in zip(labels, self.tokens):
-            if lab == "B":
-                strbuf.write("\u3000")
-            strbuf.write(tok.text)
-        return strbuf.getvalue()
+            tokseg = self.merge_segments(ref_seg, ref_seg)
+        
+        return "\u3000".join(x.text for x in tokseg)
 
     def merge_segments(self, refSeg: List[TokenData], otherSeg: List[TokenData]):
         # tokens_chstart: [chstart of each token]
@@ -108,8 +100,8 @@ class Segments:
 
         merged_seg = []        
         token_i = 0
-        while token_i < len(self.tokens):
-            tok_chstart = self.tokens[token_i].chstart
+        while token_i < len(refSeg):
+            tok_chstart = refSeg[token_i].chstart
             tok_idx_end = token_i
             if tok_chstart in aligned_chstart:
                 try:
@@ -118,10 +110,13 @@ class Segments:
                     tok_idx_end = chend_map[chend_x]
                 except:
                     pdb.set_trace()
-            tok_list = self.tokens[token_i:tok_idx_end+1]
+            tok_list = refSeg[token_i:tok_idx_end+1]
             tok_text = "".join([x.text for x in tok_list])
-            tok_start = tok_list[0].chstart
-            tok_end = tok_list[-1].chend
+            try:
+                tok_start = tok_list[0].chstart
+                tok_end = tok_list[-1].chend
+            except:
+                pdb.set_trace()
             tok_x = TokenData(tok_text, tok_start, tok_end)
             merged_seg.append(tok_x)
             token_i = tok_idx_end + 1

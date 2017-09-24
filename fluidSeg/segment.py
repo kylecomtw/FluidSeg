@@ -30,7 +30,7 @@ class FluidSeg:
             logger.info("Trying granularity: [%.1f, %.1f]", gran_x, gran_x)            
             match_seg = self.matchTokens(tokens, gran_x, gran_x)
             logger.info(match_seg)
-            segData.addLevel(match_seg) 
+            segData.addLevel(gran_x, match_seg) 
 
         return segData
     
