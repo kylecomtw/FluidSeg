@@ -8,22 +8,16 @@ class LexiconFactory():
         pass
 
     def get(self, lexfile):
-        lex = Lexicon(lexfile)
-        lex.compile()
-        return lex
-
-class LemmaData:
-    def __init__(self):
-        self.len_hist = None
+        lex = Lexicon()
+        wordlist = self.load_lexfile(lexfile)        
+        lex.compile(wordlist)        
+        return lex    
     
-    def __repr__(self):
-        return "<LemmaData: %s>" % str(self.len_hist)
-
-class Lexicon:
-    def __init__(self, lexfile):
-        self.wordlist = self.load_lexfile(lexfile)
-        self.wordmap = self.compile()
-
+    def getWithList(self, wordlist):
+        lex = Lexicon()
+        lex.compile(wordlist)
+        return lex
+    
     def load_lexfile(self, fpath):
         if not os.path.exists(fpath):
             raise FileNotFoundError("File not found %s" % fpath)
@@ -37,10 +31,21 @@ class Lexicon:
         
         return words
 
-    def compile(self):
+class LemmaData:
+    def __init__(self):
+        self.len_hist = None
+    
+    def __repr__(self):
+        return "<LemmaData: %s>" % str(self.len_hist)
+
+class Lexicon:
+    def __init__(self):        
+        self.wordmap = {}           
+
+    def compile(self, wordlist):
         word_map = {}
         # organize each word into its prefix category
-        for word in self.wordlist:
+        for word in wordlist:
             prefix = word[0]
             vec_x = word_map.get(prefix, [])
             vec_x.append(word)
@@ -60,7 +65,7 @@ class Lexicon:
             ldata.len_hist = lenHist
             word_map[prefix] = ldata
 
-        return word_map
+        self.wordmap = word_map
 
     def query_len_hist(self, prefix):
         if prefix not in self.wordmap:

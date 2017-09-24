@@ -10,7 +10,7 @@ ch = logging.StreamHandler()
 # formatter = logging.Formatter("%(name)s: %(message)s")
 # ch.setFormatter(formatter)
 logger.addHandler(ch)
-logger.setLevel(logging.INFO)
+# logger.setLevel(logging.INFO)
 
 class Segments:
     def __init__(self, tokens: List[TokenData]) -> None:
@@ -19,11 +19,11 @@ class Segments:
         self.data = {}     # type: Dict[int, List[TokenData]]
 
     def __repr__(self):
-        strbuf = []
+        strbuf = ["<Segments>"]
         if self.tokens:
-            strbuf.append("Tokens: " + str(self.tokens))
+            strbuf.append("Tokens: \n  " + str(self.tokens))
         if self.preseg:
-            strbuf.append("Preseg: " + str(self.preseg))
+            strbuf.append("Preseg: \n  " + str(self.preseg))
         if self.data:
             strbuf.append("Data: ")
             for k in sorted(self.data.keys(), reverse=True):
@@ -63,11 +63,11 @@ class Segments:
         else:
             return gran
 
-    def toSegmentedText(self, ref_seg=None, granularity=-1):
-        gran = self.find_cloest_granularity(granularity)
+    def toSegmentedText(self, ref_seg=None, granularity=-1):    
         if not ref_seg:
             ref_seg = self.tokens
-        if gran:
+        if granularity >= 0:
+            gran = self.find_cloest_granularity(granularity)
             gran_seg = self.data[gran]
             tokseg = self.merge_segments(ref_seg, gran_seg)
         else:

@@ -11,7 +11,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler()
-logger.setLevel(logging.INFO)
+# logger.setLevel(logging.INFO)
 logger.addHandler(ch)
 
 class FluidSeg:
