@@ -1,12 +1,20 @@
+import logging
+from typing import List
+from .tokendata import TokenData
 
-def transform_chpos(n_token, chstart_vec, chend_vec):        
+logger = logging.getLogger(__name__)
+ch = logging.StreamHandler()
+logger.addHandler(ch)
+logger.setLevel("WARNING")
+
+def generate_labels(n_token, tokstart_vec, tokend_vec):        
     labels = ["X"] * n_token 
-    if len(chstart_vec) != len(chend_vec):
+    if len(tokstart_vec) != len(tokend_vec):
         raise ValueError("Length mismatch chstart_vec and chend_vec")
 
-    for chstart, chend in zip(chstart_vec, chend_vec):
+    for chstart, chend in zip(tokstart_vec, tokend_vec):
         for ch_idx in range(chstart+1, chend):
-            labels[ch_idx] = "O"
+            labels[ch_idx] = "I"
         labels[chend] = "E"
         labels[chstart] = "B"
             
