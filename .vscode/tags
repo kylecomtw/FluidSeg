@@ -1,0 +1,132 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+FluidSeg	../FluidSeg\__init__.py	/^from .segment import FluidSeg$/;"	kind:namespace	line:2
+FluidSeg	../FluidSeg\segment.py	/^class FluidSeg:$/;"	kind:class	line:17
+FluidSeg	../tests\testSegment.py	/^from FluidSeg import FluidSeg$/;"	kind:namespace	line:3
+FluidSeg	../tests\testSeqAlgo.py	/^import FluidSeg.seq_algo as SeqAlgo$/;"	kind:namespace	line:7
+LemmaData	../FluidSeg\lexicon.py	/^class LemmaData:$/;"	kind:class	line:15
+Lexicon	../FluidSeg\__init__.py	/^from .lexicon import Lexicon, LexiconFactory$/;"	kind:namespace	line:3
+Lexicon	../FluidSeg\lexicon.py	/^class Lexicon:$/;"	kind:class	line:22
+Lexicon	../FluidSeg\segment.py	/^from .lexicon import Lexicon$/;"	kind:namespace	line:9
+LexiconFactory	../FluidSeg\__init__.py	/^from .lexicon import Lexicon, LexiconFactory$/;"	kind:namespace	line:3
+LexiconFactory	../FluidSeg\lexicon.py	/^class LexiconFactory():$/;"	kind:class	line:6
+LexiconFactory	../tests\testLexicon.py	/^from FluidSeg.lexicon import LexiconFactory$/;"	kind:namespace	line:2
+LexiconFactory	../tests\testSegment.py	/^from FluidSeg import LexiconFactory$/;"	kind:namespace	line:4
+LexiconTest	../tests\testLexicon.py	/^class LexiconTest(unittest.TestCase):$/;"	kind:class	line:5
+List	../FluidSeg\segdata.py	/^from typing import List$/;"	kind:namespace	line:3
+SegDataTest	../tests\testSegData.py	/^class SegDataTest(TestCase):$/;"	kind:class	line:11
+SegDataTest	../tests\testSeqAlgo.py	/^class SegDataTest(TestCase):$/;"	kind:class	line:9
+SegTest	../tests\testSegment.py	/^class SegTest(TestCase):$/;"	kind:class	line:6
+Segments	../FluidSeg\__init__.py	/^from .segdata import Segments$/;"	kind:namespace	line:1
+Segments	../FluidSeg\segdata.py	/^class Segments:$/;"	kind:class	line:14
+Segments	../FluidSeg\segment.py	/^from .segdata import Segments$/;"	kind:namespace	line:6
+Segments	../tests\testSegData.py	/^from FluidSeg import Segments$/;"	kind:namespace	line:7
+SeqAlgo	../FluidSeg\segdata.py	/^from . import seq_algo as SeqAlgo$/;"	kind:namespace	line:4
+SeqAlgo	../tests\testSeqAlgo.py	/^import FluidSeg.seq_algo as SeqAlgo$/;"	kind:namespace	line:7
+TEST_LEXFILE	../tests\testLexicon.py	/^TEST_LEXFILE = "test_lexfile.txt"$/;"	kind:variable	line:4
+TOKEN_PAT	../FluidSeg\tokenizer.py	/^    TOKEN_PAT = r"[\\u3400-\\u9fff\\uf900-\\ufaff]|[^\\s\\u3400-\\u9fff\\uf900-\\ufaff]+"$/;"	kind:variable	line:5
+TestCase	../tests\testSegData.py	/^from unittest import TestCase$/;"	kind:namespace	line:6
+TestCase	../tests\testSegment.py	/^from unittest import TestCase$/;"	kind:namespace	line:1
+TestCase	../tests\testSeqAlgo.py	/^from unittest import TestCase$/;"	kind:namespace	line:6
+TokenData	../FluidSeg\segdata.py	/^from .tokendata import TokenData$/;"	kind:namespace	line:5
+TokenData	../FluidSeg\segment.py	/^from .tokendata import TokenData$/;"	kind:namespace	line:8
+TokenData	../FluidSeg\tokendata.py	/^class TokenData:$/;"	kind:class	line:1
+TokenData	../FluidSeg\tokenizer.py	/^from .tokendata import TokenData$/;"	kind:namespace	line:2
+TokenData	../tests\testSegData.py	/^from FluidSeg.tokendata import TokenData$/;"	kind:namespace	line:9
+Tokenizer	../FluidSeg\segment.py	/^from .tokenizer import Tokenizer$/;"	kind:namespace	line:7
+Tokenizer	../FluidSeg\tokenizer.py	/^class Tokenizer:$/;"	kind:class	line:4
+Tokenizer	../tests\testSegData.py	/^from FluidSeg.tokenizer import Tokenizer$/;"	kind:namespace	line:8
+Tuple	../FluidSeg\lexicon.py	/^from typing import Tuple$/;"	kind:namespace	line:3
+__getitem__	../FluidSeg\segdata.py	/^    def __getitem__(self, item):$/;"	kind:member	line:20
+__init__	../FluidSeg\lexicon.py	/^    def __init__(self):$/;"	kind:member	line:16
+__init__	../FluidSeg\lexicon.py	/^    def __init__(self):$/;"	kind:member	line:7
+__init__	../FluidSeg\lexicon.py	/^    def __init__(self, lexfile):$/;"	kind:member	line:23
+__init__	../FluidSeg\segdata.py	/^    def __init__(self, tokens: List[TokenData]) -> None:$/;"	kind:member	line:15
+__init__	../FluidSeg\segment.py	/^    def __init__(self, lexicon: Lexicon) -> None:$/;"	kind:member	line:18
+__init__	../FluidSeg\tokendata.py	/^    def __init__(self, txt, start, end):$/;"	kind:member	line:2
+__init__	../FluidSeg\tokenizer.py	/^    def __init__(self):$/;"	kind:member	line:6
+__init__.py	../FluidSeg\__init__.py	1;"	kind:file	line:1
+__init__.py	../tests\__init__.py	1;"	kind:file	line:1
+__repr__	../FluidSeg\lexicon.py	/^    def __repr__(self):$/;"	kind:member	line:19
+__repr__	../FluidSeg\segdata.py	/^    def __repr__(self):$/;"	kind:member	line:26
+__repr__	../FluidSeg\tokendata.py	/^    def __repr__(self):$/;"	kind:member	line:7
+__setitem__	../FluidSeg\segdata.py	/^    def __setitem__(self, x, y):$/;"	kind:member	line:23
+addLevel	../FluidSeg\segdata.py	/^    def addLevel(self, labels):        $/;"	kind:member	line:29
+align_sequence	../FluidSeg\seq_algo.py	/^def align_sequence(seq_ref, seq_x):$/;"	kind:function	line:43
+author	../setup.py	/^      author='Sean Tseng',$/;"	kind:variable	line:7
+author_email	../setup.py	/^      author_email='seantyh@gmail.com',$/;"	kind:variable	line:8
+ch	../FluidSeg\segdata.py	/^ch = logging.StreamHandler()$/;"	kind:variable	line:8
+ch	../FluidSeg\segment.py	/^ch = logging.StreamHandler()$/;"	kind:variable	line:13
+chain	../tests\testSegData.py	/^from itertools import chain$/;"	kind:namespace	line:5
+chain	../tests\testSeqAlgo.py	/^from itertools import chain$/;"	kind:namespace	line:5
+compile	../FluidSeg\lexicon.py	/^    def compile(self):$/;"	kind:member	line:40
+description	../setup.py	/^      description='Chinese segmentation with fluid granularity',$/;"	kind:variable	line:5
+edit_distance	../FluidSeg\seq_algo.py	/^def edit_distance(seq_ref, seq_x):$/;"	kind:function	line:15
+get	../FluidSeg\lexicon.py	/^    def get(self, lexfile):$/;"	kind:member	line:10
+getLevel	../FluidSeg\segdata.py	/^    def getLevel(self, gran_level):$/;"	kind:member	line:32
+groupby	../FluidSeg\lexicon.py	/^from itertools import groupby$/;"	kind:namespace	line:2
+importSegData	../FluidSeg\segdata.py	/^    def importSegData(self, otherSeg: List[TokenData]):$/;"	kind:member	line:35
+lexicon.py	../FluidSeg\lexicon.py	1;"	kind:file	line:1
+license	../setup.py	/^      license='GNUv3',$/;"	kind:variable	line:9
+load_lexfile	../FluidSeg\lexicon.py	/^    def load_lexfile(self, fpath):$/;"	kind:member	line:27
+logger	../FluidSeg\segdata.py	/^logger = logging.getLogger(__name__)$/;"	kind:variable	line:7
+logger	../FluidSeg\segment.py	/^logger = logging.getLogger(__name__)$/;"	kind:variable	line:12
+logging	../FluidSeg\segdata.py	/^import logging$/;"	kind:namespace	line:2
+logging	../FluidSeg\segment.py	/^import logging$/;"	kind:namespace	line:10
+logging	../tests\testSegData.py	/^import logging$/;"	kind:namespace	line:4
+logging	../tests\testSeqAlgo.py	/^import logging$/;"	kind:namespace	line:4
+matchTokens	../FluidSeg\segment.py	/^    def matchTokens(self, tokens, gran_lb, gran_ub):        $/;"	kind:member	line:37
+np	../FluidSeg\lexicon.py	/^import numpy as np$/;"	kind:namespace	line:4
+os	../FluidSeg\lexicon.py	/^import os$/;"	kind:namespace	line:1
+os	../FluidSeg\segment.py	/^import os.path$/;"	kind:namespace	line:5
+packages	../setup.py	/^      packages=['FluidSeg'],$/;"	kind:variable	line:10
+path	../FluidSeg\segment.py	/^import os.path$/;"	kind:namespace	line:5
+pdb	../FluidSeg\segdata.py	/^import pdb$/;"	kind:namespace	line:1
+pdb	../FluidSeg\segment.py	/^import pdb$/;"	kind:namespace	line:3
+pdb	../tests\testSegData.py	/^import pdb$/;"	kind:namespace	line:3
+pdb	../tests\testSeqAlgo.py	/^import pdb$/;"	kind:namespace	line:3
+pickle	../FluidSeg\segment.py	/^import pickle$/;"	kind:namespace	line:1
+pickle	../tests\testSegData.py	/^import pickle$/;"	kind:namespace	line:2
+pickle	../tests\testSeqAlgo.py	/^import pickle$/;"	kind:namespace	line:2
+presegAsSeed	../FluidSeg\segdata.py	/^    def presegAsSeed(self, preseg: List[TokenData]):$/;"	kind:member	line:81
+query_candidates	../FluidSeg\lexicon.py	/^    def query_candidates(self, prefix, gran_lb, gran_ub):$/;"	kind:member	line:73
+query_len_hist	../FluidSeg\lexicon.py	/^    def query_len_hist(self, prefix):$/;"	kind:member	line:65
+re	../FluidSeg\segment.py	/^import re$/;"	kind:namespace	line:2
+re	../FluidSeg\tokenizer.py	/^import re$/;"	kind:namespace	line:1
+segdata.py	../FluidSeg\segdata.py	1;"	kind:file	line:1
+segment	../FluidSeg\segment.py	/^    def segment(self, tokens, gran_steps=3):$/;"	kind:member	line:23
+segment.py	../FluidSeg\segment.py	1;"	kind:file	line:1
+seq_algo.py	../FluidSeg\seq_algo.py	1;"	kind:file	line:1
+setup	../setup.py	/^from setuptools import setup$/;"	kind:namespace	line:1
+setup.py	../setup.py	1;"	kind:file	line:1
+show	../FluidSeg\segdata.py	/^    def show(self, granularity=-1):$/;"	kind:member	line:85
+testAlignSequence	../tests\testSeqAlgo.py	/^    def testAlignSequence(self):$/;"	kind:member	line:10
+testBroaderSegment	../tests\testSegment.py	/^    def testBroaderSegment(self):$/;"	kind:member	line:22
+testGranularSegment	../tests\testSegment.py	/^    def testGranularSegment(self):$/;"	kind:member	line:14
+testGranularity	../tests\testLexicon.py	/^    def testGranularity(self):$/;"	kind:member	line:19
+testLexicon.py	../tests\testLexicon.py	1;"	kind:file	line:1
+testLexiconLoad	../tests\testLexicon.py	/^    def testLexiconLoad(self):$/;"	kind:member	line:6
+testLexiconQuery	../tests\testLexicon.py	/^    def testLexiconQuery(self):$/;"	kind:member	line:11
+testPresegAsSeed	../tests\testSegData.py	/^    def testPresegAsSeed(self):$/;"	kind:member	line:13
+testSegData.py	../tests\testSegData.py	1;"	kind:file	line:1
+testSegment	../tests\testSegment.py	/^    def testSegment(self):$/;"	kind:member	line:8
+testSegment.py	../tests\testSegment.py	1;"	kind:file	line:1
+testSeqAlgo.py	../tests\testSeqAlgo.py	1;"	kind:file	line:1
+test_suite	../setup.py	/^      test_suite='tests',$/;"	kind:variable	line:11
+tokendata.py	../FluidSeg\tokendata.py	1;"	kind:file	line:1
+tokenize	../FluidSeg\tokenizer.py	/^    def tokenize(self, text):$/;"	kind:member	line:9
+tokenizer.py	../FluidSeg\tokenizer.py	1;"	kind:file	line:1
+transform_chpos	../FluidSeg\seq_algo.py	/^def transform_chpos(n_token, chstart_vec, chend_vec):        $/;"	kind:function	line:2
+tryMatchFromLexicon	../FluidSeg\segment.py	/^    def tryMatchFromLexicon(self, tokens, pos, gran_lb, gran_ub):$/;"	kind:member	line:50
+unicodedata	../FluidSeg\segment.py	/^import unicodedata$/;"	kind:namespace	line:4
+unittest	../tests\testLexicon.py	/^import unittest$/;"	kind:namespace	line:1
+unittest	../tests\testSegData.py	/^import unittest$/;"	kind:namespace	line:1
+unittest	../tests\testSegment.py	/^import unittest$/;"	kind:namespace	line:2
+unittest	../tests\testSeqAlgo.py	/^import unittest$/;"	kind:namespace	line:1
+url	../setup.py	/^      url='http:\/\/github.com\/seantyh\/fluidSeg',$/;"	kind:variable	line:6
+version	../setup.py	/^      version='0.1',$/;"	kind:variable	line:4
+zip_safe	../setup.py	/^      zip_safe=False)/;"	kind:variable	line:12

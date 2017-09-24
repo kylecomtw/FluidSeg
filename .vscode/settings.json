@@ -1,0 +1,9 @@
+{
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.pylintArgs": [
+        "--disable=C0103,C0303,C0111"
+    ],
+    "code-runner.runInTerminal": true
+}
