@@ -1,6 +1,7 @@
 import os
 from itertools import groupby
-from typings import Tuple
+from typing import Tuple
+import numpy as np
 
 class LexiconFactory():
     def __init__(self):
@@ -13,23 +14,28 @@ class LexiconFactory():
 
 class LemmaData:
     def __init__(self):
-        self.len_hist = []
+        self.len_hist = None
+    
+    def __repr__(self):
+        return "<LemmaData: %s>" % str(self.len_hist)
 
 class Lexicon:
-    def __init__(self, lexfile):        
+    def __init__(self, lexfile):
         self.wordlist = self.load_lexfile(lexfile)
         self.wordmap = self.compile()
 
     def load_lexfile(self, fpath):
         if not os.path.exists(fpath):
             raise FileNotFoundError("File not found %s" % fpath)
-        
+
         words = []
-        for ln in open(fpath, "r", encoding="UTF-8"):
+        fin = open(fpath, "r", encoding="UTF-8")
+        for ln in fin.readlines():
             if ln.startswith("#"): continue
             words.append(ln.strip())
+        fin.close()
         
-        return words        
+        return words
 
     def compile(self):
         word_map = {}
@@ -39,34 +45,54 @@ class Lexicon:
             vec_x = word_map.get(prefix, [])
             vec_x.append(word)
             word_map[prefix] = vec_x
-        
+
         for prefix, words in word_map.items():
-            wordlen = sorted([len(w) for w in words])            
-            lenhist = [(x[0], list(x[1])) for x in groupby(wordlen)]
+            wlenMap = {}
+            for w in words:
+                wlen = len(w)
+                wvec = wlenMap.get(wlen, [])
+                wvec.append(w)
+                wlenMap[wlen] = wvec
+
+            len_keys = sorted(wlenMap.keys(), reverse=True)
+            lenHist = [(L, wlenMap[L]) for L in len_keys]
             ldata = LemmaData()
-            ldata.len_hist = lenhist            
+            ldata.len_hist = lenHist
             word_map[prefix] = ldata
 
         return word_map
-    
-    def query_prefix(self, prefix, granularities: Tuple[float, float]):
-        if prefix not in self.wordmap: 
+
+    def query_len_hist(self, prefix):
+        if prefix not in self.wordmap:
             return []
 
         ldata = self.wordmap[prefix]
         lenhist = ldata.len_hist
-        cumsum = 0
-        nWord = sum([len(x[1]) for x in lenhist])
-        gran_lb, gran_ub = granularities
+        return lenhist
+
+    def query_candidates(self, prefix, gran_lb, gran_ub):
+        """ query_candidates find the words starting with `prefix`,
+        that is between the percentile(0~1) [gran_lb, gran_ub],
+        gran_lb is rounded to the nearest lower word length,
+        gran_ub is rounded to the nearest higher word length
+        """
+    
+        if prefix not in self.wordmap:
+            return []
+
+        ldata = self.wordmap[prefix]
+        lenhist = ldata.len_hist
+        wlen_vec = np.array([x[0] for x in lenhist])
+        # np.percentile will sort the array ascendingly by default,
+        # but wlen_vec is sorted descendingly. 
+        # so we flip the gran_lb, gran_ub instead
+        wlen_ub = np.percentile(wlen_vec, (1-gran_lb)*100, interpolation='higher')
+        wlen_lb = np.percentile(wlen_vec, (1-gran_ub)*100, interpolation='lower')
 
         candid_words = []
         for L, L_words in lenhist:
-            cumsum += len(L_words)
-            if cumsum/nWord > gran_ub:
-                break
-            if cumsum/nWord > gran_lb:
-                candid_words += L_words
-        
+            if L >= wlen_lb and L <= wlen_ub:
+                candid_words += L_words            
+
         return candid_words
 
-    

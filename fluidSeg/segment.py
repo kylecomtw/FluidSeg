@@ -20,52 +20,59 @@ class FluidSeg:
         self.lexicon = lexicon
         self.tokenizer = Tokenizer()
     
-    def segment(self, tokens):
+    def segment(self, tokens, gran_steps=3):
         tokens = self.tokenizer.tokenize(tokens)
         segData = Segments(tokens)
-        gran_length = 10
+        gran_length = gran_steps
         gran_step = 1
-        for gran in range(0, gran_length, gran_step): 
-            gran_arg = gran / gran_length 
-            match_seg = self.matchTokens(tokens, gran_arg)
+        for gran in range(0, gran_length+1, gran_step): 
+            gran_x = gran / gran_length             
+            logger.info("Trying granularity: [%.1f, %.1f]", gran_x, gran_x)            
+            match_seg = self.matchTokens(tokens, gran_x, gran_x)
+            logger.info(match_seg)
             segData.addLevel(match_seg) 
 
         return segData
     
-    def matchTokens(self, tokens, granularity=0):        
+    def matchTokens(self, tokens, gran_lb, gran_ub):        
         segList = []
         
-        for i in range(0, len(tokens)):
-            logger.info(" -- Go to position: %d -- ", i)            
-            # iterate through different window size
-            segFound = self.tryMatchFromLexicon(tokens, i,granularity)
+        token_cur = 0
+        while token_cur < len(tokens):       
+            segFound, seg_end_idx = self.tryMatchFromLexicon(tokens, 
+                                        token_cur, gran_lb, gran_ub)
             if segFound:
                 segList.append(segFound)
-            else:
-                pass            
+                token_cur = seg_end_idx
+            token_cur += 1
         return segList 
 
-    def tryMatchFromLexicon(self, tokens, pos, granularity = 0):
-        chprefix = tokens[pos]
-        lemma_list = self.lexicon.query_prefix(chprefix, granularity)
+    def tryMatchFromLexicon(self, tokens, pos, gran_lb, gran_ub):
+        chprefix = tokens[pos].text
+        lemma_list = self.lexicon.query_candidates(chprefix, gran_lb, gran_ub)
         lemma_list = sorted(lemma_list, key=len, reverse=True)        
-        
+
         seg = None
-        for lemma in lemma_list:
-            for cur in range(pos, pos + len(lemma)):
-                candidStr = "".join(tokens[pos:pos+cur])
+        token_end_idx = -1
+        for lemma in lemma_list:            
+            # tokens may not be consistent with character boundary
+            # therefore the length of lemma is not the number of token.
+            # We cannot join len(lemma) tokens directly.
+            for end_cur in range(pos+1, pos+len(lemma)+1):
+                candidStr = "".join([x.text for x in tokens[pos:end_cur]]) 
                 if not lemma.startswith(candidStr):
                     break
                 if candidStr == lemma:
                     lemma_found = lemma
                     chstart = tokens[pos].chstart
-                    chend = tokens[pos+cur-1].chend
+                    chend = tokens[end_cur-1].chend
                     seg = TokenData(lemma_found, chstart, chend)
+                    token_end_idx = end_cur-1
                     break
             if seg:
                 break
         
-        return seg
+        return (seg, token_end_idx)
                
   
 

@@ -15,13 +15,16 @@ class Segments:
     def __init__(self, tokens: List[TokenData]) -> None:
         self.tokens = tokens
         self.gran_levels = {}
-        self.data = ["B" * len(tokens)]
+        self.data = [tokens]
     
     def __getitem__(self, item):
         return self.data[item]
 
     def __setitem__(self, x, y):
         self.data[x] = y
+    
+    def __repr__(self):
+        return str(self.data)
     
     def addLevel(self, labels):        
         self.data.append(labels)
