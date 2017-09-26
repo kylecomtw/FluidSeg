@@ -1,7 +1,8 @@
 import os
-from itertools import groupby
+from itertools import groupby, chain
 from typing import Tuple
 import numpy as np
+import pickle
 
 class LexiconFactory():
     def __init__(self):
@@ -38,18 +39,53 @@ class LemmaData:
     def __repr__(self):
         return "<LemmaData: %s>" % str(self.len_hist)
 
+import pdb
 class Lexicon:
-    def __init__(self):        
-        self.wordmap = {}           
+    def __init__(self):  
+        self.wordmap_base = {}      
+        self.wordmap = {}                  
 
-    def compile(self, wordlist):
-        word_map = {}
+    def addSupplementary(self, wordlist):
+        # a somewhat ugly deep copy
+        wm_base_bin = pickle.dumps(self.wordmap_base)
+        new_wordmap = pickle.loads(wm_base_bin)
+        
+        for w in wordlist:
+            if not w: continue
+            prefix = w[0]
+            ldata = new_wordmap.get(prefix, LemmaData()) # ldata: LemmaData
+            if ldata.len_hist:
+                lhist = ldata.len_hist
+
+                # check for duplicated entry 
+                existed = [x[1] for x in lhist]
+                existed = list(chain.from_iterable(existed))
+                if w in existed: continue                    
+                
+                wlen_list = list(filter(lambda x: x[0] == len(w), lhist))
+                
+                if wlen_list:
+                    lhist_x = wlen_list[0]
+                    lhist_x[1].append(w)  
+                else:
+                    lhist.append((len(w), [w]))
+                ldata.len_hist = sorted(lhist, key=lambda x: x[0], reverse=True)
+
+            else:
+                ldata.len_hist = [(len(w), [w])]
+                new_wordmap[prefix] = ldata
+        self.wordmap = new_wordmap
+                
+        
+    def compile(self, wordlist):        
         # organize each word into its prefix category
-        for word in wordlist:
-            prefix = word[0]
+        word_map = {}
+        for w in wordlist:
+            if not w: continue
+            prefix = w[0]
             vec_x = word_map.get(prefix, [])
-            vec_x.append(word)
-            word_map[prefix] = vec_x
+            vec_x.append(w)
+            word_map[prefix] = vec_x        
 
         for prefix, words in word_map.items():
             wlenMap = {}
@@ -65,7 +101,10 @@ class Lexicon:
             ldata.len_hist = lenHist
             word_map[prefix] = ldata
 
-        self.wordmap = word_map
+        self.wordmap_base = word_map
+        # user base wordmap after compilation
+        # subsequent call to addSupplementary will udpate base wordmap for a new one
+        self.wordmap = self.wordmap_base
 
     def query_len_hist(self, prefix):
         if prefix not in self.wordmap:

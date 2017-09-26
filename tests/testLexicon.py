@@ -8,6 +8,17 @@ class LexiconTest(unittest.TestCase):
         print(lex.wordmap)
         self.assertTrue(True)
 
+    def testLexiconSupp(self):
+        lex = LexiconFactory().get(TEST_LEXFILE)
+        lex.addSupplementary(["我也不知道", "應該大概n是", "應該吧", "應該"])
+        self.assertEqual(len(lex.wordmap["我"].len_hist), 2)
+        self.assertEqual(len(lex.wordmap["應"].len_hist), 3)        
+        lex.addSupplementary(["我想說"])
+        print("\n")        
+        self.assertEqual(len(lex.wordmap["我"].len_hist), 1)
+        self.assertFalse("應" in lex.wordmap)
+        
+
     def testLexiconQuery(self):
         lex = LexiconFactory().get(TEST_LEXFILE)        
         lhist = lex.query_len_hist("不")
