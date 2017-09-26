@@ -114,7 +114,7 @@ class Segments:
                     chend_x = aligned_chend[aidx]
                     tok_idx_end = chend_map[chend_x]
                 except Exception as ex:
-                    logger.error(ex)
+                    logger.error(str(ex))
                     # pdb.set_trace()
             tok_list = refSeg[token_i:tok_idx_end+1]
             tok_text = "".join([x.text for x in tok_list])
@@ -122,7 +122,7 @@ class Segments:
                 tok_start = tok_list[0].chstart
                 tok_end = tok_list[-1].chend
             except Exception as ex:
-                logger.error(ex)
+                logger.error(str(ex))
                 # pdb.set_trace()
             tok_x = TokenData(tok_text, tok_start, tok_end)
             merged_seg.append(tok_x)
