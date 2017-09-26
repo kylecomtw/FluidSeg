@@ -3,6 +3,7 @@ from itertools import groupby, chain
 from typing import Tuple
 import numpy as np
 import pickle
+import pdb
 
 class LexiconFactory():
     def __init__(self):
@@ -51,12 +52,13 @@ class Lexicon:
             return 0
 
         new_wordmap = pickle.loads(self.wordmap_base_str)
-        n_word_base = len(new_wordmap)
+        n_added = 0
 
         for w in wordlist:
             if not w: continue
             prefix = w[0]
             ldata = new_wordmap.get(prefix, LemmaData()) # ldata: LemmaData
+            
             if ldata.len_hist:
                 lhist = ldata.len_hist
 
@@ -64,7 +66,7 @@ class Lexicon:
                 existed = [x[1] for x in lhist]
                 existed = list(chain.from_iterable(existed))
                 if w in existed: continue                    
-                
+                                
                 wlen_list = list(filter(lambda x: x[0] == len(w), lhist))
                 
                 if wlen_list:
@@ -72,14 +74,16 @@ class Lexicon:
                     lhist_x[1].append(w)  
                 else:
                     lhist.append((len(w), [w]))
+                n_added += 1
                 ldata.len_hist = sorted(lhist, key=lambda x: x[0], reverse=True)
 
             else:
                 ldata.len_hist = [(len(w), [w])]
                 new_wordmap[prefix] = ldata
+                n_added += 1
+
         self.wordmap = new_wordmap
-        n_word_added = len(self.wordmap)
-        return n_word_added - n_word_base
+        return n_added
                 
         
     def compile(self, wordlist):        
