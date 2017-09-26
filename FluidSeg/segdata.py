@@ -95,8 +95,13 @@ class Segments:
         aligned_chstart_idx = SeqAlgo.align_sequence(tokens_chstart, otherseg_chstart)
         aligned_chend_idx = SeqAlgo.align_sequence(tokens_chend, otherseg_chend)
 
-        aligned_chstart = [tokens_chstart[i] for i in aligned_chstart_idx if i >= 0]
-        aligned_chend = [tokens_chend[i] for i in aligned_chend_idx if i >= 0]
+        aligned_chstart = []
+        aligned_chend = []
+        for chstart_aidx, chend_aidx in zip(aligned_chstart_idx, aligned_chend_idx):
+            if chstart_aidx < 0 or chend_aidx < 0:
+                continue
+            aligned_chstart.append(tokens_chstart[chstart_aidx])
+            aligned_chend.append(tokens_chend[chend_aidx])
 
         merged_seg = []        
         token_i = 0
@@ -108,15 +113,17 @@ class Segments:
                     aidx = aligned_chstart.index(tok_chstart)
                     chend_x = aligned_chend[aidx]
                     tok_idx_end = chend_map[chend_x]
-                except:
-                    pdb.set_trace()
+                except Exception as ex:
+                    logger.error(ex)
+                    # pdb.set_trace()
             tok_list = refSeg[token_i:tok_idx_end+1]
             tok_text = "".join([x.text for x in tok_list])
             try:
                 tok_start = tok_list[0].chstart
                 tok_end = tok_list[-1].chend
-            except:
-                pdb.set_trace()
+            except Exception as ex:
+                logger.error(ex)
+                # pdb.set_trace()
             tok_x = TokenData(tok_text, tok_start, tok_end)
             merged_seg.append(tok_x)
             token_i = tok_idx_end + 1

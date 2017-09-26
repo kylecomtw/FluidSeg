@@ -26,6 +26,7 @@ class SegDataTest(TestCase):
         # print("Labels: ", labels)
         # self.assertEqual(seg.data[1], "BEBEBEBBEBEBBOEB")
 
+    # @unittest.skip("")
     def testPartialPreseg(self):
         logging.getLogger("FluidSeg.segdata").setLevel("WARNING")
         tokens = Tokenizer().tokenize("今天來說的話，沒有其實也沒關係  ^^;*~.`")
@@ -38,6 +39,15 @@ class SegDataTest(TestCase):
         print("Preseg-aligned: ", aligned_preseg)
         # print("Labels: ", labels)
         # self.assertEqual(seg.data[1], "BEBEBEBBEBEBBOEB")
+
+    def testUnmatchedStartEnd(self):
+        tokens = Tokenizer().tokenize("我不知道")
+        seg = Segments(tokens)
+        preseg = [TokenData("我", 0, 1), TokenData("知不知道", 1, 4), TokenData("你", 4, 5)]
+        chunks = [TokenData("道", 3, 4), TokenData("你", 4, 5)]
+        aligned_chunks = seg.merge_segments(preseg, chunks)
+        print("aligned_chunks", aligned_chunks)
+
 
 if __name__ == "__main__":
     unittest.main()

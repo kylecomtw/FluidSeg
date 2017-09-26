@@ -49,7 +49,7 @@ class FluidSeg:
 
     def tryMatchFromLexicon(self, tokens, pos, gran_lb, gran_ub):
         chprefix = tokens[pos].text
-        lemma_list = self.lexicon.query_candidates(chprefix, gran_lb, gran_ub)
+        lemma_list = self.lexicon.query_candidates(chprefix, gran_lb, 1)
         lemma_list = sorted(lemma_list, key=len, reverse=True)        
 
         seg = None

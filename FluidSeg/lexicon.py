@@ -39,17 +39,20 @@ class LemmaData:
     def __repr__(self):
         return "<LemmaData: %s>" % str(self.len_hist)
 
-import pdb
 class Lexicon:
     def __init__(self):  
-        self.wordmap_base = {}      
+        self.wordmap_base_str = None
         self.wordmap = {}                  
 
     def addSupplementary(self, wordlist):
-        # a somewhat ugly deep copy
-        wm_base_bin = pickle.dumps(self.wordmap_base)
-        new_wordmap = pickle.loads(wm_base_bin)
-        
+        # a somewhat ugly deep copy 
+        if not self.wordmap_base_str:
+            print("wordmap is not initialized yet")
+            return 0
+
+        new_wordmap = pickle.loads(self.wordmap_base_str)
+        n_word_base = len(new_wordmap)
+
         for w in wordlist:
             if not w: continue
             prefix = w[0]
@@ -75,6 +78,8 @@ class Lexicon:
                 ldata.len_hist = [(len(w), [w])]
                 new_wordmap[prefix] = ldata
         self.wordmap = new_wordmap
+        n_word_added = len(self.wordmap)
+        return n_word_added - n_word_base
                 
         
     def compile(self, wordlist):        
@@ -101,10 +106,10 @@ class Lexicon:
             ldata.len_hist = lenHist
             word_map[prefix] = ldata
 
-        self.wordmap_base = word_map
+        self.wordmap_base_str = pickle.dumps(word_map)
         # user base wordmap after compilation
         # subsequent call to addSupplementary will udpate base wordmap for a new one
-        self.wordmap = self.wordmap_base
+        self.wordmap = word_map
 
     def query_len_hist(self, prefix):
         if prefix not in self.wordmap:
