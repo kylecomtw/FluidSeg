@@ -64,6 +64,10 @@ class Segments:
             return gran
 
     def toSegmentedText(self, ref_seg=None, granularity=-1):    
+        tokseg = toSegmentedToken(ref_seg, granulartiy)
+        return "\u3000".join(x.text for x in tokseg)
+    
+    def toSegmentedToken(self, ref_seg=None, granularity=-1):
         if not ref_seg:
             ref_seg = self.tokens
         if granularity >= 0:
@@ -74,7 +78,7 @@ class Segments:
             # there is no data in self.data
             tokseg = self.merge_segments(ref_seg, ref_seg)
         
-        return "\u3000".join(x.text for x in tokseg)
+        return tokseg
 
     def merge_segments(self, refSeg: List[TokenData], otherSeg: List[TokenData]):
         # tokens_chstart: [chstart of each token]
